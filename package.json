@@ -1,0 +1,24 @@
+{
+  "name": "browser-semantic-search",
+  "version": "0.1.0",
+  "description": "A browser extension for AI-powered semantic search over a page.",
+  "scripts": {
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "typewatch": "tsc --noEmit --watch"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "styled-components": "^5.3.10"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.7",
+    "@types/react-dom": "^18.2.4",
+    "@types/styled-components": "^5.1.26",
+    "typescript": "^5.0.4",
+    "vite": "^4.3.8",
+    "vite-tsconfig-paths": "^4.2.0"
+  }
+}
