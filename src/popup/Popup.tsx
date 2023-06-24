@@ -1,3 +1,5 @@
+/* Copyright (c) 2023 Michael Barlow */
+
 import React from "react";
 import styled from "styled-components";
 import { QueryInput } from "./QueryInput";

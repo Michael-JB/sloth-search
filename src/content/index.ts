@@ -1,3 +1,5 @@
+/* Copyright (c) 2023 Michael Barlow */
+
 import { convert } from "html-to-text";
 import {
   ContentScriptRequest,

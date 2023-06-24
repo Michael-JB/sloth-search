@@ -1,3 +1,5 @@
+/* Copyright (c) 2023 Michael Barlow */
+
 type Result<Payload> =
   | { ok: true; payload: Payload }
   | { ok: false; reason: string };

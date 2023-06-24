@@ -1,3 +1,5 @@
+/* Copyright (c) 2023 Michael Barlow */
+
 import React, { useState } from "react";
 import styled from "styled-components";
 

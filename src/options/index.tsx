@@ -1,3 +1,5 @@
+/* Copyright (c) 2023 Michael Barlow */
+
 import React from "react";
 import { createRoot } from "react-dom/client";
 import Options from "./Options";

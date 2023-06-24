@@ -1,3 +1,5 @@
+/* Copyright (c) 2023 Michael Barlow */
+
 import { ContentScriptRequest, ContentScriptResponse } from "./messageTypes";
 
 export const messageActiveTab = async (

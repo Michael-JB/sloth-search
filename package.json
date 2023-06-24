@@ -2,10 +2,15 @@
   "name": "browser-semantic-search",
   "version": "0.1.0",
   "description": "A browser extension for AI-powered semantic search over a page.",
+  "author": {
+    "name": "Michael Barlow"
+  },
   "scripts": {
     "build": "vite build",
     "typecheck": "tsc --noEmit",
-    "typewatch": "tsc --noEmit --watch"
+    "typewatch": "tsc --noEmit --watch",
+    "copyright-check": "copyright-header --copyrightHolder \"Michael Barlow\" --include \"src\"",
+    "copyright-fix": "copyright-header --copyrightHolder \"Michael Barlow\" --include \"src\" --fix"
   },
   "type": "module",
   "license": "MIT",
@@ -22,8 +27,14 @@
     "@types/react": "^18.2.7",
     "@types/react-dom": "^18.2.4",
     "@types/styled-components": "^5.1.26",
+    "copyright-header": "^0.4.6",
+    "pre-commit": "^1.2.2",
     "typescript": "^5.0.4",
     "vite": "^4.3.8",
     "vite-tsconfig-paths": "^4.2.0"
-  }
+  },
+  "pre-commit": [
+    "copyright-check",
+    "typecheck"
+  ]
 }
