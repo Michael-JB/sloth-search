@@ -1,46 +1,68 @@
 /* Copyright (c) 2023 Michael Barlow */
 
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useRef, useState } from "react";
+import styled from "@emotion/styled";
+import {
+  CircularProgress,
+  IconButton,
+  InputAdornment,
+  Paper,
+  TextField,
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 
 type QueryInputProps = {
-  onSubmit: (query: string) => void;
-  disabled: boolean;
+  onSubmit: (query: string) => Promise<void>;
 };
 
-// A VERY hacked-together input component for testing purposes
-export const QueryInput = ({ onSubmit, disabled }: QueryInputProps) => {
-  const [input, setInput] = useState("");
+export const QueryInput = ({ onSubmit }: QueryInputProps) => {
+  const inputRef = useRef<HTMLInputElement>();
+  const [submitPending, setSubmitPending] = useState<boolean>(false);
 
-  const submit = (): void => onSubmit(input);
+  const submit = async (): Promise<void> => {
+    if (!inputRef?.current?.value) return;
+    setSubmitPending(true);
+    await onSubmit(inputRef.current.value);
+    setSubmitPending(false);
+    // TODO: the following re-focus doesn't work as the rendered component is still disabled at the time of the focus call. Fix this.
+    // inputRef.current.focus();
+  };
 
   const handleKeyDown = (event: React.KeyboardEvent): void => {
     if (event.key === "Enter") submit();
   };
 
   return (
-    <Panel>
-      <label htmlFor="name">Enter your query:</label>
-      <input
-        type="text"
-        id="name"
-        name="name"
-        onChange={(e) => setInput((e.target as HTMLInputElement).value)}
+    <QueryInputPanel elevation={0}>
+      <StyledTextField
         onKeyDown={handleKeyDown}
-        required={true}
-        minLength={1}
-        maxLength={100}
-        size={50}
+        inputRef={inputRef}
+        label="Enter a query"
+        disabled={submitPending}
+        color="primary"
+        autoFocus
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={submit} edge="end" disabled={submitPending}>
+                {submitPending ? (
+                  <CircularProgress size="1.5rem" />
+                ) : (
+                  <SearchIcon />
+                )}
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
       />
-      <button onClick={submit}>Click me</button>
-    </Panel>
+    </QueryInputPanel>
   );
 };
 
-const Panel = styled.div`
+const QueryInputPanel = styled(Paper)`
   display: flex;
-  flex-direction: column;
-  > * {
-    margin: 0.5rem;
-  }
+`;
+
+const StyledTextField = styled(TextField)`
+  flex-grow: 1;
 `;

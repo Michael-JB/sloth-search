@@ -1,12 +1,15 @@
 /* Copyright (c) 2023 Michael Barlow */
 
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import styled from "@emotion/styled";
 import { QueryInput } from "./QueryInput";
 import { messageActiveTab } from "messaging";
 import { MemoryVectorStore } from "langchain/vectorstores/memory";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import { RetrievalQAChain } from "langchain/chains";
+import { OpenAI } from "langchain/llms/openai";
+import { CircularProgress, Paper, Typography } from "@mui/material";
 
 const fetchPageText = async (): Promise<string | undefined> => {
   const response = await messageActiveTab({ type: "pageText" });
@@ -21,8 +24,8 @@ const generateVectorStore = async (
   text: string
 ): Promise<MemoryVectorStore> => {
   const splitter = new RecursiveCharacterTextSplitter({
-    chunkSize: 100,
-    chunkOverlap: 20,
+    chunkSize: 200,
+    chunkOverlap: 50,
   });
   const splitText = await splitter.createDocuments([text]);
   const vectorStore = await MemoryVectorStore.fromDocuments(
@@ -32,24 +35,19 @@ const generateVectorStore = async (
   return vectorStore;
 };
 
-type PageText =
-  | string //text
-  | false; //no text
-
 export default () => {
-  const [pageText, setPageText] = useState<PageText | undefined>(undefined);
   const [vectorStore, setVectorStore] = useState<MemoryVectorStore | undefined>(
     undefined
   );
   const [error, setError] = useState<Error | undefined>(undefined);
+  const [answerText, setAnswerText] = useState<string>("");
 
   const buildVectorStore = async () => {
     const text = await fetchPageText();
     if (!text) {
-      setPageText(false);
+      setError(new Error("Failed to fetch page text"));
       return;
     }
-    setPageText(text);
     const store = await generateVectorStore(text);
     setVectorStore(store);
   };
@@ -61,45 +59,52 @@ export default () => {
   if (error)
     return (
       <Panel>
-        <p>Error: {error.message}</p>
-      </Panel>
-    );
-
-  if (pageText === undefined)
-    return (
-      <Panel>
-        <p>Fetching page...</p>
-      </Panel>
-    );
-
-  if (pageText === false)
-    return (
-      <Panel>
-        <p>Nothing to show...</p>
+        <Typography variant="body1" color="red">
+          Error: {error.message}
+        </Typography>
       </Panel>
     );
 
   if (!vectorStore)
     return (
       <Panel>
-        <p>Indexing...</p>
+        <LoadingPanel elevation={0}>
+          <CircularProgress />
+        </LoadingPanel>
       </Panel>
     );
 
-  // Temporary simple cosine similarity search for testing
-  const onQuerySubmit = async (query: string) =>
-    console.log(await vectorStore.similaritySearch(query, 1));
+  const onQuerySubmit = async (query: string) => {
+    const model = new OpenAI({
+      openAIApiKey: import.meta.env.VITE_OPENAI_API_KEY,
+    });
+    const chain = RetrievalQAChain.fromLLM(model, vectorStore.asRetriever());
+    const chainResult = await chain.call({ query });
+
+    setAnswerText(chainResult?.text ?? "Could not answer query.");
+  };
 
   return (
-    <Panel>
-      <h1>Semantic Search</h1>
-      <QueryInput onSubmit={onQuerySubmit} disabled={false} />
+    <Panel elevation={0}>
+      <QueryInput onSubmit={onQuerySubmit} />
+      {answerText && <AnswerText variant="body1">{answerText}</AnswerText>}
     </Panel>
   );
 };
 
-const Panel = styled.div`
-  background-color: cyan;
-  width: 400px;
-  height: 300px;
+const LoadingPanel = styled(Paper)`
+  display: flex;
+  justify-content: center;
+`;
+
+const AnswerText = styled(Typography)`
+  margin-top: 1rem;
+`;
+
+const Panel = styled(Paper)`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-width: 20rem;
+  padding: 1rem 0.8rem 0.8rem 0.8rem;
 `;

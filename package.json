@@ -15,18 +15,21 @@
   "type": "module",
   "license": "MIT",
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@fontsource/roboto": "^5.0.3",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.13.6",
     "html-to-text": "^9.0.5",
     "langchain": "^0.0.96",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "styled-components": "^5.3.10"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.238",
     "@types/html-to-text": "^9.0.1",
     "@types/react": "^18.2.7",
     "@types/react-dom": "^18.2.4",
-    "@types/styled-components": "^5.1.26",
     "copyright-header": "^0.4.6",
     "pre-commit": "^1.2.2",
     "typescript": "^5.0.4",
