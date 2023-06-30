@@ -1,5 +1,7 @@
 # browser-semantic-search
 
+![Build status](https://github.com/Michael-JB/browser-semantic-search/actions/workflows/build.yml/badge.svg)
+
 TODO: project description
 
 ## Compatibility

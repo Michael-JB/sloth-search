@@ -1,4 +1,4 @@
-name: Build and package
+name: build
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "lts/Hydrogen"
+          node-version: "18.16.1"
 
       - name: Install dependencies
         run: npm install
@@ -27,10 +27,10 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
-      - name: Build Package
+      - name: Build extension package
         run: npm run build
 
-      - name: Upload Package
+      - name: Upload extension package
         uses: actions/upload-artifact@v2
         with:
           name: extension-package
