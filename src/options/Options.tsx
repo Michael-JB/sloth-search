@@ -17,7 +17,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useSystemColourScheme } from "hooks/useSystemColourScheme";
 import { getOpenAIApiKey, storeOpenAIApiKey } from "storage/apiKey";
 
-export default () => {
+export const Options = () => {
   const inputRef = useRef<HTMLInputElement>();
   const [submitPending, setSubmitPending] = useState<boolean>(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);

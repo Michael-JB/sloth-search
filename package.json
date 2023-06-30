@@ -7,6 +7,7 @@
   },
   "scripts": {
     "build": "vite build",
+    "lint": "eslint src",
     "typecheck": "tsc --noEmit",
     "typewatch": "tsc --noEmit --watch",
     "copyright-check": "copyright-header --copyrightHolder \"Michael Barlow\" --include \"src\"",
@@ -32,14 +33,19 @@
     "@types/react": "^18.2.7",
     "@types/react-dom": "^18.2.4",
     "@types/webextension-polyfill": "^0.10.1",
+    "@typescript-eslint/eslint-plugin": "^5.60.1",
+    "@typescript-eslint/parser": "^5.60.1",
     "copyright-header": "^0.4.6",
+    "eslint": "^8.43.0",
+    "eslint-plugin-react": "^7.32.2",
     "pre-commit": "^1.2.2",
-    "typescript": "^5.0.4",
+    "typescript": "5.0.4",
     "vite": "^4.3.8",
     "vite-tsconfig-paths": "^4.2.0"
   },
   "pre-commit": [
     "copyright-check",
-    "typecheck"
+    "typecheck",
+    "lint"
   ]
 }

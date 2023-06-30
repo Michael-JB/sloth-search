@@ -2,15 +2,15 @@
 
 import React, { useEffect, useState } from "react";
 
-import { Query } from "./Query";
+import { Query } from "./components/Query";
 import styled from "@emotion/styled";
 import { Paper, ThemeProvider } from "@mui/material";
-import { LoadingSpinner } from "./LoadingSpinner";
-import { KeyAlert } from "./KeyAlert";
 import { useSystemColourScheme } from "hooks/useSystemColourScheme";
 import { getOpenAIApiKey } from "storage/apiKey";
+import { LoadingSpinner } from "./components/LoadingSpinner";
+import { ApiKeyAlert } from "./components/ApiKeyAlert";
 
-export default () => {
+export const Popup = () => {
   const [apiKey, setApiKey] = useState<string | false | undefined>(undefined);
   const theme = useSystemColourScheme();
 
@@ -29,7 +29,7 @@ export default () => {
     <ThemeProvider theme={theme}>
       <Panel elevation={0}>
         {apiKey === undefined && <LoadingSpinner />}
-        {apiKey === false && <KeyAlert />}
+        {apiKey === false && <ApiKeyAlert />}
         {apiKey && <Query openAIApiKey={apiKey} />}
       </Panel>
     </ThemeProvider>

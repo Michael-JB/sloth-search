@@ -13,6 +13,7 @@ const extractDocumentText = () => {
 
 const handleMessage = (
   request: ContentScriptRequest,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   sender: chrome.runtime.MessageSender
 ): ContentScriptResponse => {
   switch (request.type) {

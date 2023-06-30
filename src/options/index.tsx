@@ -2,6 +2,10 @@
 
 import React from "react";
 import { createRoot } from "react-dom/client";
-import Options from "./Options";
+import { Options } from "./Options";
 
-createRoot(document.getElementById("root")!).render(<Options />);
+(() => {
+  const root = document.createElement("root");
+  if (!root) throw new Error("Root element not found");
+  createRoot(root).render(<Options />);
+})();

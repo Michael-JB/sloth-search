@@ -24,8 +24,6 @@ export const QueryInput = ({ onSubmit }: QueryInputProps) => {
     setSubmitPending(true);
     await onSubmit(inputRef.current.value);
     setSubmitPending(false);
-    // TODO: the following re-focus doesn't work as the rendered component is still disabled at the time of the focus call. Fix this.
-    // inputRef.current.focus();
   };
 
   const handleKeyDown = (event: React.KeyboardEvent): void => {

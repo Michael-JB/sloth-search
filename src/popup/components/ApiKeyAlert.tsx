@@ -6,7 +6,7 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import browser from "webextension-polyfill";
 import styled from "@emotion/styled";
 
-export const KeyAlert = () => (
+export const ApiKeyAlert = () => (
   <Alert severity="error">
     <AlertTitle>Error</AlertTitle>
     <AlertDescription variant="body1">
