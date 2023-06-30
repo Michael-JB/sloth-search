@@ -1,16 +1,124 @@
 /* Copyright (c) 2023 Michael Barlow */
 
-import * as React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
+import {
+  Alert,
+  Button,
+  IconButton,
+  InputAdornment,
+  Paper,
+  Snackbar,
+  TextField,
+  ThemeProvider,
+} from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { useSystemColourScheme } from "hooks/useSystemColourScheme";
+import { getOpenAIApiKey, storeOpenAIApiKey } from "storage/apiKey";
 
-export default () => (
-  <Panel>
-    <button onClick={() => alert("This is a test")}>Click me</button>
-  </Panel>
-);
+export default () => {
+  const inputRef = useRef<HTMLInputElement>();
+  const [submitPending, setSubmitPending] = useState<boolean>(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [showKey, setShowKey] = useState(false);
+  const theme = useSystemColourScheme();
 
-const Panel = styled.div`
-  background-color: red;
-  width: 600px;
-  height: 600px;
+  const onSnackbarClose = (
+    event: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") return;
+    setSnackbarOpen(false);
+  };
+
+  const onSubmit = async (): Promise<void> => {
+    if (!inputRef?.current?.value) return;
+    setSubmitPending(true);
+    try {
+      await storeOpenAIApiKey(inputRef.current.value);
+    } catch (error) {
+      console.error(error);
+      return;
+    } finally {
+      setSubmitPending(false);
+    }
+    setSnackbarOpen(true);
+  };
+
+  useEffect(() => {
+    (async () => {
+      if (!inputRef?.current) return;
+      try {
+        const apiKey = await getOpenAIApiKey();
+        if (apiKey) inputRef.current.value = apiKey;
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, []);
+
+  return (
+    <ThemeProvider theme={theme}>
+      <Panel elevation={0}>
+        <StyledTextField
+          inputRef={inputRef}
+          label="OpenAI API key"
+          disabled={submitPending}
+          color="primary"
+          id="standard-basic"
+          variant="standard"
+          placeholder="sk-..."
+          helperText="Semantic Search requires a valid OpenAI API key to function. Semantic
+          Search stores this key safely in session storage, and will not send it
+          anywhere other than the OpenAI APIs. You will need to re-enter this key if
+          you close the browser."
+          type={showKey ? "text" : "password"}
+          autoFocus
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle API key visibility"
+                  onClick={() => setShowKey(!showKey)}
+                  disabled={submitPending}
+                  edge="end"
+                >
+                  {showKey ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+        <Button variant="contained" onClick={onSubmit} disabled={submitPending}>
+          Save
+        </Button>
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={3000}
+          onClose={onSnackbarClose}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        >
+          <Alert onClose={onSnackbarClose} severity="success">
+            Saved
+          </Alert>
+        </Snackbar>
+      </Panel>
+    </ThemeProvider>
+  );
+};
+
+const Panel = styled(Paper)`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 40rem;
+  border-radius: 0;
+  padding: 1rem;
+`;
+
+const StyledTextField = styled(TextField)`
+  align-self: stretch;
+  margin-bottom: 1rem;
+  margin-right: 0.5rem;
 `;

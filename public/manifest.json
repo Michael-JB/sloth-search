@@ -1,11 +1,11 @@
 {
   "name": "Semantic Search",
   "description": "A browser extension for AI-powered semantic search over a page.",
+  "author": "michael@ramyun.co.uk",
   "version": "1.0",
   "manifest_version": 3,
   "action": {
     "default_popup": "src/popup/index.html",
-    "default_options": "src/options/index.html",
     "default_icon": "placeholder.png"
   },
   "content_scripts": [
@@ -13,5 +13,9 @@
       "js": ["src/scripts/content.js"],
       "matches": ["<all_urls>"]
     }
-  ]
+  ],
+  "permissions": ["storage"],
+  "options_ui": {
+    "page": "src/options/index.html"
+  }
 }
