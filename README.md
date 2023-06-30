@@ -22,8 +22,19 @@ This extension is compatible with the following browsers:
 
 To run TypeScript type checking, run `npm run typecheck`. To run this while you make changes, run `npm run typewatch`.
 
+## Future plans
+
+These are features that I'd like to add in the future.
+
+- [ ] User sessions. A user would be able to start a session to index multiple pages. Queries would then be evaluated over the resulting index.
+- [ ] Improved HTML text scraping. At the moment, the text extraction is quite rudimentary and the indexed data is of a low quality. It would be great to improve this.
+- [ ] Back it with a server. At the moment, users have to enter their own API keys. The resulting annoyance to the user is exaggerated by the inability to persist keys between browser sessions for security reasons.
+- [ ] Custom prompt. At the moment, we use the stock langchain QA retrieval chain. Though this already works well, tuning the prompt and vector querying will give better results.
+
 ## Built with
 
+- [OpenAI](https://openai.com/) - Completion and embeddings API
+- [LangChain](https://js.langchain.com/) - Vector database and LLM framework
 - [React](https://react.dev/) - UI library
 - [TypeScript](https://www.typescriptlang.org/) - Typing for JavaScript
 - [Vite](https://vitejs.dev/) - Build system (mostly used for pre-configured [Rollup](https://rollupjs.org/))
