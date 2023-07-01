@@ -1,36 +1,36 @@
 /* Copyright (c) 2023 Michael Barlow */
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import { Query } from "./components/Query";
 import styled from "@emotion/styled";
-import { Paper, ThemeProvider } from "@mui/material";
+import { Alert, AlertTitle, Paper, ThemeProvider } from "@mui/material";
 import { useSystemColourScheme } from "hooks/useSystemColourScheme";
-import { getOpenAIApiKey } from "storage/apiKey";
 import { LoadingSpinner } from "./components/LoadingSpinner";
 import { ApiKeyAlert } from "./components/ApiKeyAlert";
+import { useOpenAIApiKey } from "hooks/useApiKey";
+import { useErrorReporter } from "hooks/useErrorReporter";
 
 export const Popup = () => {
-  const [apiKey, setApiKey] = useState<string | false | undefined>(undefined);
+  const [errorMessage, reportError] = useErrorReporter();
+  const apiKey = useOpenAIApiKey(reportError);
   const theme = useSystemColourScheme();
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const apiKey = await getOpenAIApiKey();
-        setApiKey(apiKey ?? false);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  }, []);
 
   return (
     <ThemeProvider theme={theme}>
       <Panel elevation={0}>
-        {apiKey === undefined && <LoadingSpinner />}
-        {apiKey === false && <ApiKeyAlert />}
-        {apiKey && <Query openAIApiKey={apiKey} />}
+        {errorMessage ? (
+          <Alert severity="error">
+            <AlertTitle>Error</AlertTitle>
+            {errorMessage}
+          </Alert>
+        ) : (
+          <>
+            {apiKey === undefined && <LoadingSpinner />}
+            {apiKey === false && <ApiKeyAlert />}
+            {apiKey && <Query openAIApiKey={apiKey} />}
+          </>
+        )}
       </Panel>
     </ThemeProvider>
   );

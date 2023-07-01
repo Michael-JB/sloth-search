@@ -1,6 +1,6 @@
 /* Copyright (c) 2023 Michael Barlow */
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "@emotion/styled";
 import {
   Alert,
@@ -15,10 +15,14 @@ import {
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useSystemColourScheme } from "hooks/useSystemColourScheme";
-import { getOpenAIApiKey, storeOpenAIApiKey } from "storage/apiKey";
+import { storeOpenAIApiKey } from "storage";
+import { useErrorReporter } from "hooks/useErrorReporter";
+import { useOpenAIApiKey } from "hooks/useApiKey";
 
 export const Options = () => {
   const inputRef = useRef<HTMLInputElement>();
+  const [errorMessage, reportError, clearError] = useErrorReporter();
+  const apiKey = useOpenAIApiKey(useErrorReporter()[1]);
   const [submitPending, setSubmitPending] = useState<boolean>(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [showKey, setShowKey] = useState(false);
@@ -37,26 +41,18 @@ export const Options = () => {
     setSubmitPending(true);
     try {
       await storeOpenAIApiKey(inputRef.current.value);
+      clearError();
     } catch (error) {
-      console.error(error);
+      reportError({
+        displayMessage: "Failed to store API key. See console for details.",
+        error,
+      });
       return;
     } finally {
       setSubmitPending(false);
+      setSnackbarOpen(true);
     }
-    setSnackbarOpen(true);
   };
-
-  useEffect(() => {
-    (async () => {
-      if (!inputRef?.current) return;
-      try {
-        const apiKey = await getOpenAIApiKey();
-        if (apiKey) inputRef.current.value = apiKey;
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -74,6 +70,7 @@ export const Options = () => {
           anywhere other than the OpenAI APIs. You will need to re-enter this key if
           you close the browser."
           type={showKey ? "text" : "password"}
+          value={apiKey ? apiKey : undefined}
           autoFocus
           InputProps={{
             endAdornment: (
@@ -99,9 +96,15 @@ export const Options = () => {
           onClose={onSnackbarClose}
           anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         >
-          <Alert onClose={onSnackbarClose} severity="success">
-            Saved
-          </Alert>
+          {errorMessage ? (
+            <Alert onClose={onSnackbarClose} severity="error">
+              Error: {errorMessage}
+            </Alert>
+          ) : (
+            <Alert onClose={onSnackbarClose} severity="success">
+              Saved
+            </Alert>
+          )}
         </Snackbar>
       </Panel>
     </ThemeProvider>

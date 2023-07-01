@@ -1,26 +1,29 @@
 /* Copyright (c) 2023 Michael Barlow */
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 type ErrorReport = {
   displayMessage: string;
   error: unknown;
 };
 
-type ErrorReporterReturn = [
-  string | undefined,
-  (errorReport: ErrorReport) => void
-];
+export type ErrorReporter = (errorReport: ErrorReport) => void;
+
+type ErrorReporterReturn = [string | undefined, ErrorReporter, () => void];
 
 export const useErrorReporter = (): ErrorReporterReturn => {
   const [displayMessage, setDisplayMessage] = useState<string | undefined>(
     undefined
   );
 
-  const reportError = ({ displayMessage, error }: ErrorReport) => {
+  const reportError = useCallback(({ displayMessage, error }: ErrorReport) => {
     setDisplayMessage(displayMessage);
     console.error(error instanceof Error ? error.message : error);
-  };
+  }, []);
 
-  return [displayMessage, reportError];
+  const clearError = useCallback(() => {
+    setDisplayMessage(undefined);
+  }, []);
+
+  return [displayMessage, reportError, clearError];
 };
