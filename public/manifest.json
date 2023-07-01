@@ -1,12 +1,12 @@
 {
-  "name": "Semantic Search",
-  "description": "A browser extension for AI-powered semantic search over a page.",
+  "name": "Sloth Search",
+  "description": "A browser extension that provides AI-powered semantic search over web pages.",
   "author": "michael@ramyun.co.uk",
-  "version": "1.0",
+  "version": "0.1.0",
   "manifest_version": 3,
   "action": {
     "default_popup": "src/popup/index.html",
-    "default_icon": "placeholder.png"
+    "default_title": "Sloth Search"
   },
   "content_scripts": [
     {
@@ -17,5 +17,11 @@
   "permissions": ["storage"],
   "options_ui": {
     "page": "src/options/index.html"
+  },
+  "icons": {
+    "16": "icon16.png",
+    "32": "icon32.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
   }
 }

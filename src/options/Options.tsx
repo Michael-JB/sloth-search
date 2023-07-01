@@ -65,7 +65,7 @@ export const Options = () => {
           id="standard-basic"
           variant="standard"
           placeholder="sk-..."
-          helperText="Semantic Search requires a valid OpenAI API key to function. Semantic
+          helperText="Sloth Search requires a valid OpenAI API key to function. Sloth
           Search stores this key safely in session storage, and will not send it
           anywhere other than the OpenAI APIs. You will need to re-enter this key if
           you close the browser."

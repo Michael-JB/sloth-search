@@ -10,7 +10,7 @@ export const ApiKeyAlert = () => (
   <Alert severity="error">
     <AlertTitle>Error</AlertTitle>
     <AlertDescription variant="body1">
-      You need to provide an OpenAI API key to use Semantic Search.
+      You need to provide an OpenAI API key to use Sloth Search.
     </AlertDescription>
     <Button
       variant="contained"
