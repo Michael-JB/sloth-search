@@ -1,6 +1,5 @@
 /* Copyright (c) 2023 Michael Barlow */
 
-import { convert } from "html-to-text";
 import {
   ContentScriptRequest,
   ContentScriptResponse,
@@ -8,7 +7,7 @@ import {
 } from "messaging";
 
 const extractDocumentText = () => {
-  return convert(document.body.innerText);
+  return document.body.innerText;
 };
 
 const handleMessage = (

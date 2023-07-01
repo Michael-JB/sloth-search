@@ -40,7 +40,7 @@ const Panel = styled(Paper)`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  min-width: 20rem;
+  min-width: 25rem;
   padding: 1rem 0.8rem 0.8rem 0.8rem;
   border-radius: 0;
 `;

@@ -12,7 +12,12 @@ const fetchPageText = async (): Promise<string> => {
     throw new Error("Failed to message active tab: " + response.reason);
   const pageText = response.payload;
   if (!pageText) throw new Error("Failed to fetch page text");
-  return response.payload;
+  return pageText;
+};
+
+const prepareForIndexing = (text: string): string => {
+  // TODO: Clean up text a bit (e.g., strip out nav text, etc.)
+  return text;
 };
 
 type PageIndexReturn = MemoryVectorStore | undefined;
@@ -27,7 +32,8 @@ export const usePageIndex = (
     (async () => {
       try {
         const pageText = await fetchPageText();
-        const index = await createPageIndex(openAIApiKey, pageText);
+        const preparedText = prepareForIndexing(pageText);
+        const index = await createPageIndex(openAIApiKey, preparedText);
         setPageIndex(index);
       } catch (error) {
         reportError({
