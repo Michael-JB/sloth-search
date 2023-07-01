@@ -2,7 +2,6 @@
   "compilerOptions": {
     "baseUrl": "src",
     "jsx": "react",
-    "types": ["chrome", "vite/client"],
     "target": "es2015",
     "module": "es2022",
     "moduleResolution": "node",

@@ -1,5 +1,6 @@
 /* Copyright (c) 2023 Michael Barlow */
 
+import browser from "webextension-polyfill";
 import { ContentScriptRequest, ContentScriptResponse } from "./messageTypes";
 
 export const messageActiveTab = async (
@@ -9,7 +10,7 @@ export const messageActiveTab = async (
   if (!activeTab || !activeTab.id) {
     return { ok: false, reason: "Could not identify active tab" };
   }
-  const response: ContentScriptResponse = await chrome.tabs.sendMessage(
+  const response: ContentScriptResponse = await browser.tabs.sendMessage(
     activeTab.id,
     message
   );
@@ -19,13 +20,13 @@ export const messageActiveTab = async (
 export const registerMessageListener = (
   handleMessage: (
     request: ContentScriptRequest,
-    sender: chrome.runtime.MessageSender
+    sender: browser.Runtime.MessageSender
   ) => ContentScriptResponse
 ) => {
-  chrome.runtime.onMessage.addListener(
+  browser.runtime.onMessage.addListener(
     (
       request: ContentScriptRequest,
-      sender: chrome.runtime.MessageSender,
+      sender: browser.Runtime.MessageSender,
       sendResponse: (response: ContentScriptResponse) => void
     ) => {
       const response = handleMessage(request, sender);
@@ -34,8 +35,8 @@ export const registerMessageListener = (
   );
 };
 
-const getActiveTab = async (): Promise<chrome.tabs.Tab | undefined> => {
-  const [tab] = await chrome.tabs.query({
+const getActiveTab = async (): Promise<browser.Tabs.Tab | undefined> => {
+  const [tab] = await browser.tabs.query({
     active: true,
     lastFocusedWindow: true,
     status: "complete",
