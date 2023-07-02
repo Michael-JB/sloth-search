@@ -2,7 +2,7 @@
 
 ![Logo](public/icon128.png)
 
-![Build status](https://github.com/Michael-JB/sloth-search/actions/workflows/build.yml/badge.svg)
+[![Build status](https://github.com/Michael-JB/sloth-search/actions/workflows/build.yml/badge.svg)](https://github.com/Michael-JB/sloth-search/actions/workflows/build.yml)
 
 A browser extension that provides AI-powered semantic search over web pages.
 
