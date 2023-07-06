@@ -22,9 +22,9 @@ This extension is compatible with the following browsers:
 
 ## Installation
 
-### Install via web store
+### Install from browser web store
 
-(Not yet available)
+- [Google Chrome Web Store](https://chrome.google.com/webstore/detail/sloth-search/jinbbhdfmkgebhbekpoaignaeclflibd)
 
 ### Install from release
 
