@@ -45,13 +45,25 @@ export const createPageIndex = async (
   return vectorStore;
 };
 
+export type QueryResult = {
+  answer: string;
+  sources: string[];
+};
+
 export const executeQuery = async (
   openAIApiKey: string,
   pageIndex: MemoryVectorStore,
   query: string
-): Promise<string> => {
+): Promise<QueryResult> => {
   const model = new OpenAI({ ...OPENAI_CONFIG, openAIApiKey });
-  const chain = RetrievalQAChain.fromLLM(model, pageIndex.asRetriever());
+  const chain = RetrievalQAChain.fromLLM(model, pageIndex.asRetriever(), {
+    returnSourceDocuments: true,
+  });
   const chainResult = await chain.call({ query });
-  return chainResult.text ?? "Failed to answer query.";
+  return {
+    answer: chainResult.text ?? "Failed to answer query.",
+    sources: chainResult.sourceDocuments.map(
+      (sourceDocument: Document) => sourceDocument.pageContent
+    ),
+  };
 };

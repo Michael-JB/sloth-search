@@ -2,7 +2,7 @@
   "name": "Sloth Search",
   "description": "A browser extension that provides AI-powered semantic search over web pages.",
   "author": "michael@ramyun.co.uk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "manifest_version": 3,
   "action": {
     "default_popup": "src/popup/index.html",

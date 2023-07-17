@@ -1,10 +1,15 @@
 /* Copyright (c) 2023 Michael Barlow */
 
 import React from "react";
-
 import { Query } from "./components/Query";
 import styled from "@emotion/styled";
-import { Alert, AlertTitle, Paper, ThemeProvider } from "@mui/material";
+import {
+  Alert,
+  AlertTitle,
+  CssBaseline,
+  Paper,
+  ThemeProvider,
+} from "@mui/material";
 import { useSystemColourScheme } from "hooks/useSystemColourScheme";
 import { LoadingSpinner } from "./components/LoadingSpinner";
 import { ApiKeyAlert } from "./components/ApiKeyAlert";
@@ -18,6 +23,7 @@ export const Popup = () => {
 
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline enableColorScheme />
       <Panel elevation={0}>
         {errorMessage ? (
           <Alert severity="error">

@@ -5,6 +5,7 @@ import styled from "@emotion/styled";
 import {
   Alert,
   Button,
+  CssBaseline,
   IconButton,
   InputAdornment,
   Paper,
@@ -56,6 +57,7 @@ export const Options = () => {
 
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline enableColorScheme />
       <Panel elevation={0}>
         <StyledTextField
           inputRef={inputRef}

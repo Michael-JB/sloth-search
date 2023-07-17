@@ -1,13 +1,15 @@
 /* Copyright (c) 2023 Michael Barlow */
 
 import React, { useState } from "react";
+
 import styled from "@emotion/styled";
 import { QueryInput } from "./QueryInput";
-import { Alert, AlertTitle, Typography } from "@mui/material";
+import { Alert, AlertTitle, Divider, Typography } from "@mui/material";
 import { LoadingSpinner } from "./LoadingSpinner";
-import { executeQuery } from "search";
+import { QueryResult, executeQuery } from "search";
 import { useErrorReporter } from "hooks/useErrorReporter";
 import { usePageIndex } from "popup/hooks/usePageIndex";
+import { Sources } from "./Sources";
 
 type QueryProps = {
   openAIApiKey: string;
@@ -16,13 +18,15 @@ type QueryProps = {
 export const Query = ({ openAIApiKey }: QueryProps) => {
   const [errorMessage, reportError] = useErrorReporter();
   const pageIndex = usePageIndex(openAIApiKey, reportError);
-  const [answerText, setAnswerText] = useState<string | undefined>(undefined);
+  const [queryResult, setQueryResult] = useState<QueryResult | undefined>(
+    undefined
+  );
 
   const onQuerySubmit = async (query: string) => {
     try {
       if (!pageIndex) throw new Error("Invalid page index.");
       const queryResult = await executeQuery(openAIApiKey, pageIndex, query);
-      setAnswerText(queryResult);
+      setQueryResult(queryResult);
     } catch (error) {
       reportError({
         displayMessage: "Failed to execute query. See console for details.",
@@ -42,13 +46,26 @@ export const Query = ({ openAIApiKey }: QueryProps) => {
   if (!pageIndex) return <LoadingSpinner />;
 
   return (
-    <>
+    <QueryPanel>
       <QueryInput onSubmit={onQuerySubmit} />
-      {answerText && <AnswerText variant="body1">{answerText}</AnswerText>}
-    </>
+      {queryResult && (
+        <>
+          <QueryAnswerText variant="body1">
+            {queryResult.answer}
+          </QueryAnswerText>
+          <Divider />
+          <Sources sources={queryResult.sources} />
+        </>
+      )}
+    </QueryPanel>
   );
 };
 
-const AnswerText = styled(Typography)`
-  margin-top: 1rem;
+const QueryAnswerText = styled(Typography)`
+  margin: 1rem 0;
+`;
+
+const QueryPanel = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
