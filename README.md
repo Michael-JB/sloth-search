@@ -67,6 +67,7 @@ This extension is still early in its development. These are some features and im
 - [React](https://react.dev/) - UI library
 - [TypeScript](https://www.typescriptlang.org/) - Typing for JavaScript
 - [Vite](https://vitejs.dev/) - Build system (mostly used for pre-configured [Rollup](https://rollupjs.org/))
+- [Material UI](https://mui.com/) - React component library
 - [npm](https://www.npmjs.com/) - JavaScript dependency management
 - [nano-react-app](https://github.com/nano-react-app/nano-react-app) - Project bootstrap, because `create-react-app` is too bloated
 
