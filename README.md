@@ -8,9 +8,9 @@ A browser extension that provides AI-powered semantic search over web pages.
 
 ## About
 
-Sloth Search will attempt to answer your queries based on the content of the page you are on. It extracts the text from the page, identifies the relevant snippets via text embeddings, and formats an answer using an LLM. It is particularly useful for text-heavy websites such as Wikipedia. See the following example.
+Sloth Search answers your queries based on the content of the page you are on. It extracts text from the page, identifies the relevant snippets via text embeddings, and formats an answer using an LLM. It also provides the sources used to generate the answer, so you can easily verify that the answer is accurate to the page content. It is particularly useful for text-heavy websites such as Wikipedia. See the following example.
 
-![Example](bin/screenshot.png)
+![Example](bin/screenshot-light.png)
 
 _Note: this extension is currently a minimal prototype. There are many cool features to add!_
 
@@ -54,7 +54,7 @@ The project is configured to use ESLint with recommended configurations. Run lin
 This extension is still early in its development. These are some features and improvements that I would like to add in the future:
 
 - _User sessions._ A user would be able to start a session to index multiple pages. Queries would then be evaluated over the resulting index.
-- _Text highlighting._ At the moment, the extension only exposes a QA-style interface. It would be cool if it highlighted relevant text on the page (or gave citations).
+- _Text highlighting._ At the moment, the extension only exposes a QA-style interface with citations. It would be cool if it highlighted relevant text on the page.
 - _Support other document formats._ (e.g., PDFs).
 - _Improved HTML text scraping._ At the moment, the text extraction is quite rudimentary and the indexed data is of a low quality. It would be great to improve this.
 - _Back it with a server._ At the moment, users have to enter their own API keys. The resulting annoyance to the user is exaggerated by the inability to persist keys between browser sessions for security reasons.
